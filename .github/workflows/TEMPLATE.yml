@@ -1,22 +1,36 @@
-name: Build ArgoCD MCP Server
+# Platform Apps Build Workflow Template
+#
+# Copy this file and customize for each new app:
+# 1. Rename file to match app name: .github/workflows/<app-name>.yml
+# 2. Update APP_NAME env var
+# 3. Update paths to match app directory
+# 4. Update metadata (title, description)
+#
+# Example for a new app called "grafana-mcp-server":
+#   - Copy this to: .github/workflows/grafana-mcp-server.yml
+#   - Change APP_NAME to: grafana-mcp-server
+#   - Update paths from 'argocd-mcp-server/**' to 'grafana-mcp-server/**'
+#   - Update title/description in metadata
+
+name: Build <APP_NAME>
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'argocd-mcp-server/**'
-      - '.github/workflows/argocd-mcp-server.yml'
+      - '<app-directory>/**'
+      - '.github/workflows/<workflow-file>.yml'
   pull_request:
     paths:
-      - 'argocd-mcp-server/**'
-      - '.github/workflows/argocd-mcp-server.yml'
+      - '<app-directory>/**'
+      - '.github/workflows/<workflow-file>.yml'
   workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
-  APP_NAME: argocd-mcp-server
-  IMAGE_NAME: ${{ github.repository_owner }}/platform-apps/argocd-mcp-server
+  APP_NAME: <app-name>
+  IMAGE_NAME: ${{ github.repository_owner }}/platform-apps/<app-name>
 
 jobs:
   build-and-push:
@@ -49,8 +63,8 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=raw,value=latest,enable={{is_default_branch}}
           labels: |
-            org.opencontainers.image.title=ArgoCD MCP Server
-            org.opencontainers.image.description=Model Context Protocol server for ArgoCD
+            org.opencontainers.image.title=<App Title>
+            org.opencontainers.image.description=<App Description>
             org.opencontainers.image.vendor=ArchipelagoAI
 
       - name: Build and push Docker image
