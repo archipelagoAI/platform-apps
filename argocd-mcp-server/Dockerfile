@@ -2,12 +2,12 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install dependencies
+# Copy application code and dependencies files
 COPY pyproject.toml README.md ./
-RUN pip install --no-cache-dir -e .
-
-# Copy application code
 COPY argocd_mcp_server/ ./argocd_mcp_server/
+
+# Install the package in editable mode
+RUN pip install --no-cache-dir -e .
 
 # Run the server
 CMD ["python", "-m", "argocd_mcp_server"]
