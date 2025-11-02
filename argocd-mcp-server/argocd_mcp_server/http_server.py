@@ -56,9 +56,15 @@ async def root():
         "description": "ArgoCD MCP Server with HTTP/SSE transport",
         "endpoints": {
             "health": "/health",
-            "mcp": "/mcp",
+            "mcp": "/",
         }
     }
+
+
+@app.post("/")
+async def mcp_root_endpoint(request: Request):
+    """MCP endpoint at root path for VS Code compatibility."""
+    return await mcp_endpoint(request)
 
 
 @app.get("/health")
