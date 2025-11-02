@@ -271,6 +271,7 @@ async def call_tool_impl(name: str, arguments: dict) -> list[dict]:
 @app.post("/mcp")
 async def mcp_endpoint(request: Request):
     """HTTP endpoint for MCP JSON-RPC messages."""
+    body = None
     try:
         body = await request.json()
         method = body.get("method", "unknown")
@@ -321,7 +322,7 @@ async def mcp_endpoint(request: Request):
         logger.error(f"Error processing MCP request: {str(e)}")
         return {
             "jsonrpc": "2.0",
-            "id": body.get("id", None),
+            "id": body.get("id") if body else None,
             "error": {
                 "code": -32603,
                 "message": str(e)
